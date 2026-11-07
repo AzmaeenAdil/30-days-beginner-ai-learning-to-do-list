@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI ও ডিজিটাল লার্নিং ৩০ দিনের বিগিনার চ্যালেঞ্জ — লার্নিং ট্র্যাকার</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #09090b;
+      --card-bg: #121216;
+      --card-border: #22222a;
+      --surface: #18181f;
+      --accent: #ff5500;
+      --accent-glow: rgba(255, 85, 0, 0.25);
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.2);
+      --text: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --text-dim: #71717a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Hind Siliguri', 'Inter', system-ui, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px 16px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1.5;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+    }
+
+    /* Header Bar */
+    header {
+      background: linear-gradient(180deg, #181822 0%, var(--card-bg) 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 32px 28px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 85, 0, 0.12);
+      border: 1px solid rgba(255, 85, 0, 0.35);
+      color: var(--accent);
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .tagline {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .presenter-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      border-top: 1px solid var(--card-border);
+      padding-top: 16px;
+    }
+
+    .presenter-meta span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* Sticky Progress Overview */
+    .progress-section {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      position: sticky;
+      top: 16px;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .progress-label {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .progress-stat {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .track {
+      height: 12px;
+      background: #1e1e28;
+      border-radius: 99px;
+      overflow: hidden;
+      border: 1px solid #2a2a36;
+      margin-bottom: 12px;
+    }
+
+    .fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ff5500, #ff8800 60%, #10b981 100%);
+      border-radius: 99px;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .stats-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+      color: var(--text-dim);
+    }
+
+    .reset-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-size: 0.82rem;
+      text-decoration: underline;
+      transition: color 0.2s;
+    }
+
+    .reset-btn:hover {
+      color: #ef4444;
+    }
+
+    /* Phase Accordion */
+    .phase-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      margin-bottom: 24px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    }
+
+    .phase-header {
+      padding: 18px 24px;
+      background: var(--surface);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .phase-title-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .phase-badge {
+      background: var(--accent);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+
+    .phase-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .phase-count {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .tasks-list {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Day Task Card */
+    .day-card {
+      background: #14141b;
+      border: 1px solid #20202a;
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: all 0.25s ease;
+    }
+
+    .day-card:hover {
+      border-color: #323242;
+      background: #171720;
+    }
+
+    .day-card.completed {
+      background: rgba(16, 185, 129, 0.05);
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+
+    /* Checkbox */
+    .checkbox-container {
+      position: relative;
+      width: 26px;
+      height: 26px;
+      flex-shrink: 0;
+      margin-top: 4px;
+      cursor: pointer;
+    }
+
+    .checkbox-container input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 26px;
+      width: 26px;
+      background-color: #1e1e28;
+      border: 2px solid #3a3a4c;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .checkbox-container:hover .checkmark {
+      border-color: var(--accent);
+    }
+
+    .checkbox-container input:checked ~ .checkmark {
+      background-color: var(--success);
+      border-color: var(--success);
+      box-shadow: 0 0 10px var(--success-glow);
+    }
+
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+      width: 6px;
+      height: 12px;
+      border: solid white;
+      border-width: 0 2.5px 2.5px 0;
+      transform: rotate(45deg);
+      margin-top: -2px;
+    }
+
+    .checkbox-container input:checked ~ .checkmark:after {
+      display: block;
+    }
+
+    /* Task Content */
+    .task-content {
+      flex: 1;
+    }
+
+    .task-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .day-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      font-weight: 700;
+      background: #252535;
+      color: #93c5fd;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .day-card.completed .day-pill {
+      background: rgba(16, 185, 129, 0.15);
+      color: #6ee7b7;
+    }
+
+    .task-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      transition: color 0.2s;
+    }
+
+    .day-card.completed .task-title {
+      text-decoration: line-through;
+      color: var(--text-dim);
+    }
+
+    .task-instruction {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .task-proof {
+      background: #1a1a24;
+      border-left: 3px solid var(--accent);
+      padding: 8px 12px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .day-card.completed .task-proof {
+      border-left-color: var(--success);
+    }
+
+    /* EOD Check-in Helper */
+    .eod-section {
+      background: linear-gradient(180deg, #151520 0%, var(--card-bg) 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 28px 24px;
+      margin-top: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .eod-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .eod-header h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .eod-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+
+    .eod-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .eod-form-grid { grid-template-columns: 1fr; }
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .input-group input, .input-group select {
+      width: 100%;
+      background: #181822;
+      border: 1px solid #2e2e3e;
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-group input:focus, .input-group select:focus {
+      border-color: var(--accent);
+    }
+
+    .eod-template-box {
+      background: #0c0c10;
+      border: 1px solid #252535;
+      border-radius: 12px;
+      padding: 16px;
+      font-family: 'Hind Siliguri', monospace;
+      font-size: 0.92rem;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .copy-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+
+    .copy-btn:hover {
+      background: #e04a00;
+      transform: translateY(-2px);
+    }
+
+    .copy-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--success);
+      color: #fff;
+      padding: 14px 22px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.88rem;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="header-badge">🚀 ৩০ দিনের ফ্রি প্র্যাকটিস ট্র্যাক</div>
+      <h1>AI ও ডিজিটাল লার্নিং বিগিনার চ্যালেঞ্জ</h1>
+      <p class="tagline">প্রতিদিন মাত্র একটি টাস্ক—তাড়াহুড়ো নয়, ধারাবাহিকতাই আসল শক্তি। ৩০ দিনে জিরো থেকে প্রো!</p>
+      
+      <div class="presenter-meta">
+        <span>👨‍🏫 মেন্টর: Azmaeen Adil Sami</span>
+        <span>🏢 প্রেজেন্টেড বাই: FILMAAS</span>
+        <span>💾 ব্রাউজারে অটোমেটিক সেভ হয়</span>
+      </div>
+    </header>
+
+    <!-- Sticky Progress Overview -->
+    <div class="progress-section">
+      <div class="progress-header">
+        <span class="progress-label">📊 আপনার অগ্রগতি (Challenge Progress)</span>
+        <span class="progress-stat" id="progress-percent">0% সম্পন্ন</span>
+      </div>
+      <div class="track">
+        <div class="fill" id="progress-fill"></div>
+      </div>
+      <div class="stats-footer">
+        <span id="progress-count">০/৩০ টাস্ক সম্পন্ন</span>
+        <button class="reset-btn" onclick="resetProgress()">প্রগ্রেস রিসেট করুন</button>
+      </div>
+    </div>
+
+    <!-- Phase 1: Days 1–7 -->
+    <div class="phase-card">
+      <div class="phase-header" onclick="togglePhase('phase-1')">
+        <div class="phase-title-group">
+          <span class="phase-badge">PHASE 1</span>
+          <span class="phase-name">AI পরিচিতি ও প্রথম প্রম্পট (Days 1–7)</span>
+        </div>
+        <span class="phase-count" id="phase-1-count">০/৭ সম্পন্ন</span>
+      </div>
+      <div class="tasks-list" id="phase-1">
+        
+        <!-- Day 1 -->
+        <div class="day-card" id="card-1">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-1" onchange="toggleTask(1)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 01</span>
+              <span class="task-title">Gemini ও ChatGPT ব্রাউজারে সেটআপ ও লগইন</span>
+            </div>
+            <p class="task-instruction">ব্রাউজার ওপেন করে Google Gemini এবং ChatGPT বুকমার্ক করুন। অ্যাকাউন্ট লগইন করে যেকোনো বিষয়ে আপনার পছন্দমতো প্রথম ৩টি প্রশ্ন বা প্রম্পট লিখে টেস্ট করুন।</p>
+            <div class="task-proof">📸 প্রুফ: ব্রাউজারে বুকমার্ক করা এবং প্রথম চ্যাটের স্ক্রিনশট রাখুন।</div>
+          </div>
+        </div>
+
+        <!-- Day 2 -->
+        <div class="day-card" id="card-2">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-2" onchange="toggleTask(2)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 02</span>
+              <span class="task-title">সার্চ ইঞ্জিন বনাম জেনারেটিভ AI-এর পার্থক্য বোঝা</span>
+            </div>
+            <p class="task-instruction">গুগল সার্চ ইঞ্জিন কীভাবে লিংক খুঁজে বের করে এবং AI কীভাবে শব্দের পর শব্দ অনুমান (Predict) করে নতুন উত্তর লেখে—সেটি ৫ লাইনে নোটপ্যাডে নিজের ভাষায় লিখুন।</p>
+            <div class="task-proof">📸 প্রুফ: নোটপ্যাডে আপনার লেখা ৫ লাইনের সারসংক্ষেপ।</div>
+          </div>
+        </div>
+
+        <!-- Day 3 -->
+        <div class="day-card" id="card-3">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-3" onchange="toggleTask(3)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 03</span>
+              <span class="task-title">প্রম্পটের ৪টি স্তম্ভ (Role, Task, Context, Constraint) প্রয়োগ</span>
+            </div>
+            <p class="task-instruction">শেফের রেসিপির মতো AI-কে স্পষ্ট নির্দেশনা দিন: ১টি রোল দিন, স্পষ্ট কাজ দিন, কনটেক্সট ও শর্ত দিয়ে একটি প্রফেশনাল ইমেইল বা আইডিয়া বের করুন।</p>
+            <div class="task-proof">📸 প্রুফ: ৪টি স্তম্ভ মেনে লেখা আপনার প্রম্পট এবং AI-এর নিখুঁত উত্তর।</div>
+          </div>
+        </div>
+
+        <!-- Day 4 -->
+        <div class="day-card" id="card-4">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-4" onchange="toggleTask(4)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 04</span>
+              <span class="task-title">AI Model বনাম AI Tool — ইঞ্জিন ও ড্যাশবোর্ডের পার্থক্য</span>
+            </div>
+            <p class="task-instruction">Midjourney বা Leonardo কিন্তু মডেল নয়, কেবল ইন্টারফেস বা টুল! হুডের নিচের মূল মডেল ও উপরের টুলের পার্থক্যের গাড়ির ইঞ্জিনের অ্যানালজিটি মনে রাখুন।</p>
+            <div class="task-proof">📸 প্রুফ: মডেল বনাম টুলের পার্থক্য নিজের ভাষায় সংক্ষেপে লিখে সেভ করুন।</div>
+          </div>
+        </div>
+
+        <!-- Day 5 -->
+        <div class="day-card" id="card-5">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-5" onchange="toggleTask(5)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 05</span>
+              <span class="task-title">Diffusion Model পরিচিতি — নয়েজ মুছে ছবি তৈরি</span>
+            </div>
+            <p class="task-instruction">AI কিন্তু ফাঁকা ক্যানভাসে তুলি চালায় না—টিভির ঝিরিঝিরি নয়েজ থেকে ভাস্করের মতো অপ্রয়োজনীয় কুয়াশা মুছে ছবি বের করে! Forward ও Reverse ডিফিউশন বুঝে নিন।</p>
+            <div class="task-proof">📸 প্রুফ: পর্ব ৫-এর রিলটি দেখা এবং ডিফিউশনের মূল সূত্র নোট করা।</div>
+          </div>
+        </div>
+
+        <!-- Day 6 -->
+        <div class="day-card" id="card-6">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-6" onchange="toggleTask(6)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 06</span>
+              <span class="task-title">Latent Space কী — ডেটার অদৃশ্য কম্প্রেশন মানচিত্র</span>
+            </div>
+            <p class="task-instruction">বিশাল মেগাপিক্সেল ছবিকে কীভাবে AI সংকুচিত করে গাণিতিক ভেক্টরে সাজিয়ে রাখে—Latent Space-এর কনসেপ্টটি একটি ডায়াগ্রাম বা নোটে রূপ দিন।</p>
+            <div class="task-proof">📸 প্রুফ: Latent Space নিয়ে আপনার আঁকা বা লেখা ধারণার ছবি।</div>
+          </div>
+        </div>
+
+        <!-- Day 7 -->
+        <div class="day-card" id="card-7">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-7" onchange="toggleTask(7)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 07</span>
+              <span class="task-title">Seed Number ও Randomness — একই প্রম্পটে একই ছবি লক করা</span>
+            </div>
+            <p class="task-instruction">একই প্রম্পট দিলে বারবার আলাদা ছবি কেন আসে? Seed নম্বর কী এবং নির্দিষ্ট একটি Seed দিয়ে কীভাবে একই ছবির পুনরাবৃত্তি সম্ভব তা জানুন।</p>
+            <div class="task-proof">📸 প্রুফ: প্রথম সপ্তাহের ৭টি টাস্ক শেষ করে ফেজ ১ কমপ্লিট করার স্ক্রিনশট।</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Phase 2: Days 8–14 -->
+    <div class="phase-card">
+      <div class="phase-header" onclick="togglePhase('phase-2')">
+        <div class="phase-title-group">
+          <span class="phase-badge">PHASE 2</span>
+          <span class="phase-name">প্রম্পট ক্রাফটিং ও মডেলের পার্থক্য (Days 8–14)</span>
+        </div>
+        <span class="phase-count" id="phase-2-count">০/৭ সম্পন্ন</span>
+      </div>
+      <div class="tasks-list" id="phase-2">
+        
+        <!-- Day 8 -->
+        <div class="day-card" id="card-8">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-8" onchange="toggleTask(8)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 08</span>
+              <span class="task-title">ভালো প্রম্পটের ৫টি স্তর (5-Layer Prompt Architecture)</span>
+            </div>
+            <p class="task-instruction">লেয়ার ১: সাবজেক্ট ও টেক্সচার, লেয়ার ২: পরিবেশ, লেয়ার ৩: কম্পোজিশন, লেয়ার ৪: আলো, লেয়ার ৫: ক্যামেরা লেন্স। এই ৫টি স্তর সাজিয়ে ১টি প্রম্পট লিখুন।</p>
+            <div class="task-proof">📸 প্রুফ: ৫টি স্তরে বিভক্ত আপনার লেখা প্রথম হাইপার-ডিটেইল্ড প্রম্পট।</div>
+          </div>
+        </div>
+
+        <!-- Day 9 -->
+        <div class="day-card" id="card-9">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-9" onchange="toggleTask(9)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 09</span>
+              <span class="task-title">Aspect Ratio বোঝা (9:16 রিল, 16:9 সিনেমা, 1:1 স্কয়ার)</span>
+            </div>
+            <p class="task-instruction">মোবাইল রিল (9:16), ইউটিউব ভিডিও (16:9), এবং ইনস্টাগ্রাম পোস্ট (1:1 / 4:5)-এর ফ্রেম রেশিও কেন জরুরি এবং কীভাবে সেট করতে হয় তা প্র্যাকটিস করুন।</p>
+            <div class="task-proof">📸 প্রুফ: ৩টি ভিন্ন অ্যাসপেক্ট রেশিওতে কনসেপ্ট তৈরি করা।</div>
+          </div>
+        </div>
+
+        <!-- Day 10 -->
+        <div class="day-card" id="card-10">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-10" onchange="toggleTask(10)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 10</span>
+              <span class="task-title">Style Reference বনাম Character Reference</span>
+            </div>
+            <p class="task-instruction">একটি রেফারেন্স ছবি দিয়ে স্টাইল (রং ও মুড) নেওয়া আর ক্যারেক্টার (মুখ ও ব্যক্তি) অপরিবর্তিত রাখার মধ্যে মূল পার্থক্য জানুন।</p>
+            <div class="task-proof">📸 প্রুফ: স্টাইল ও ক্যারেক্টার রেফারেন্সের পার্থক্যের ছোট নোট।</div>
+          </div>
+        </div>
+
+        <!-- Day 11 -->
+        <div class="day-card" id="card-11">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-11" onchange="toggleTask(11)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 11</span>
+              <span class="task-title">Midjourney-এর বিবর্তন — V1 থেকে আধুনিক ভার্সন</span>
+            </div>
+            <p class="task-instruction">২০২২ সালের ঝাপসা বিমূর্ত ছবি থেকে আজকের নিখুঁত ফটোগ্রাফিক রেজোলিউশন—মডেলগুলো কীভাবে ধাপে ধাপে ডেটা ও অ্যালগরিদম উন্নত করেছে তা স্টাডি করুন।</p>
+            <div class="task-proof">📸 প্রুফ: মিডজার্নির বিবর্তন নিয়ে ১টি শিক্ষণীয় নোট।</div>
+          </div>
+        </div>
+
+        <!-- Day 12 -->
+        <div class="day-card" id="card-12">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-12" onchange="toggleTask(12)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 12</span>
+              <span class="task-title">Midjourney বনাম Stable Diffusion — ক্লাউড বনাম ওপেন-ওয়েট</span>
+            </div>
+            <p class="task-instruction">ক্লাউড প্ল্যাটফর্মের সুবিধা আর লোকাল কম্পিউটারে সম্পূর্ণ ফ্রিতে নিজের নিয়ন্ত্রণে মডেল চালানোর স্বাধীনতার তুলনামূলক পর্যালোচনা করুন।</p>
+            <div class="task-proof">📸 প্রুফ: ক্লাউড বনাম লোকাল এআই-এর ২টি সুবিধা ও অসুবিধা।</div>
+          </div>
+        </div>
+
+        <!-- Day 13 -->
+        <div class="day-card" id="card-13">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-13" onchange="toggleTask(13)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 13</span>
+              <span class="task-title">Negative Prompting — ছবিতে অবাঞ্ছিত বিষয় বাদ দেওয়া</span>
+            </div>
+            <p class="task-instruction">নেগেটিভ প্রম্পট দিয়ে কীভাবে অতিরিক্ত হাত, বিকৃত চোখ, টেক্সট, লোগো বা ব্লার দূর করতে হয় তা শিখুন এবং একটি প্রম্পটে প্রয়োগ করুন।</p>
+            <div class="task-proof">📸 প্রুফ: পজিটিভ ও নেগেটিভ প্রম্পটের স্পষ্ট উদাহরণ।</div>
+          </div>
+        </div>
+
+        <!-- Day 14 -->
+        <div class="day-card" id="card-14">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-14" onchange="toggleTask(14)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 14</span>
+              <span class="task-title">সপ্তাহ ২ এর মিনি প্রজেক্ট — ৩টি ভিন্ন আর্ট স্টাইলের আউটপুট</span>
+            </div>
+            <p class="task-instruction">একটি নির্দিষ্ট আইডিয়াকে ৩টি স্টাইলে রূপ দিন: ১. সিনেমাটিক ফটোগ্রাফি, ২. ওয়াটারকালার ইলাস্ট্রেশন, ৩. সাইবারপাঙ্ক ডিজিটাল পেইন্টিং।</p>
+            <div class="task-proof">📸 প্রুফ: ৩টি ভিন্ন স্টাইলের কনসেপ্ট আর্টের কোলাজ স্ক্রিনশট।</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Phase 3: Days 15–21 -->
+    <div class="phase-card">
+      <div class="phase-header" onclick="togglePhase('phase-3')">
+        <div class="phase-title-group">
+          <span class="phase-badge">PHASE 3</span>
+          <span class="phase-name">Stable Diffusion, SDXL ও লোকাল AI (Days 15–21)</span>
+        </div>
+        <span class="phase-count" id="phase-3-count">০/৭ সম্পন্ন</span>
+      </div>
+      <div class="tasks-list" id="phase-3">
+        
+        <!-- Day 15 -->
+        <div class="day-card" id="card-15">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-15" onchange="toggleTask(15)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 15</span>
+              <span class="task-title">SDXL কী এবং কেন এটি ওপেন সোর্সের বড় মাইলফলক</span>
+            </div>
+            <p class="task-instruction">SD 1.5-এর ৫১২ পিক্সেল সীমাবদ্ধতা ভেঙে কীভাবে SDXL ১ মেগাপিক্সেল হাই-রেজোলিউশন ও জটিল টেক্সট রেন্ডারিং সম্ভব করল তা জানুন।</p>
+            <div class="task-proof">📸 প্রুফ: SDXL-এর বিশেষত্ব নিয়ে আপনার নোট।</div>
+          </div>
+        </div>
+
+        <!-- Day 16 -->
+        <div class="day-card" id="card-16">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-16" onchange="toggleTask(16)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 16</span>
+              <span class="task-title">UNet ও ডাবল Text Encoder-এর ভূমিকা</span>
+            </div>
+            <p class="task-instruction">CLIP এবং OpenCLIP—দুটো টেক্সট এনকোডার কীভাবে প্রম্পটের অর্থ ও ভিজ্যুয়াল ধারণা আলাদা করে UNet-কে পরিচালনা করে তা বুঝুন।</p>
+            <div class="task-proof">📸 প্রুফ: এনকোডারের কাজের সারসংক্ষেপ।</div>
+          </div>
+        </div>
+
+        <!-- Day 17 -->
+        <div class="day-card" id="card-17">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-17" onchange="toggleTask(17)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 17</span>
+              <span class="task-title">LoRA কী — কম মেমোরিতে নতুন স্টাইল বা চরিত্র শেখানো</span>
+            </div>
+            <p class="task-instruction">পুরো মডেল রি-ট্রেন না করে কীভাবে মাত্র ৫০-২০০ মেগাবাইটের LoRA ফাইল দিয়ে যেকোনো ব্যক্তি, পোশাক বা নির্দিষ্ট আর্ট স্টাইল যুক্ত করা যায়।</p>
+            <div class="task-proof">📸 প্রুফ: LoRA কীভাবে কাজ করে তার ৩ লাইনের সংজ্ঞা।</div>
+          </div>
+        </div>
+
+        <!-- Day 18 -->
+        <div class="day-card" id="card-18">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-18" onchange="toggleTask(18)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 18</span>
+              <span class="task-title">ControlNet — মানুষের সঠিক পোজ, ডেপথ ও লাইন নিয়ন্ত্রণ</span>
+            </div>
+            <p class="task-instruction">OpenPose, Canny Edge, এবং Depth ম্যাপ কীভাবে র্যান্ডমনেস দূর করে মানুষের হাত-পায়ের অবিকল অবস্থান নিশ্চিত করে তা শিখুন।</p>
+            <div class="task-proof">📸 প্রুফ: ControlNet-এর ৩টি মূল মডেলের নাম ও কাজ নোট করা।</div>
+          </div>
+        </div>
+
+        <!-- Day 19 -->
+        <div class="day-card" id="card-19">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-19" onchange="toggleTask(19)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 19</span>
+              <span class="task-title">Inpainting — ব্রাশ দিয়ে নির্দিষ্ট অংশ প্রতিস্থাপন করা</span>
+            </div>
+            <p class="task-instruction">পুরো ছবি নতুন করে না বানিয়ে শুধুমাত্র জামার রং পরিবর্তন, সানগ্লাস পরানো বা মুখের অভিব্যক্তি বদলানোর কৌশল শিখুন।</p>
+            <div class="task-proof">📸 প্রুফ: ইনপেইন্টিং কনসেপ্টের প্র্যাকটিস স্ক্রিনশট।</div>
+          </div>
+        </div>
+
+        <!-- Day 20 -->
+        <div class="day-card" id="card-20">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-20" onchange="toggleTask(20)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 20</span>
+              <span class="task-title">Outpainting — ফ্রেমের বাইরে নতুন জগত সম্প্রসারণ</span>
+            </div>
+            <p class="task-instruction">একটি ক্লোজ-আপ ছবিকে কীভাবে চারপাশে প্রসারিত করে ওয়াইড-অ্যাঙ্গেল সিনেমাটিক ল্যান্ডস্কেপে রূপ দেওয়া যায় তা বুঝুন।</p>
+            <div class="task-proof">📸 প্রুফ: আউটপেইন্টিং দিয়ে ফ্রেম বড় করার ফলাফল।</div>
+          </div>
+        </div>
+
+        <!-- Day 21 -->
+        <div class="day-card" id="card-21">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-21" onchange="toggleTask(21)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 21</span>
+              <span class="task-title">Upscaling বনাম ডিটেইলিং — 4K আল্ট্রা ক্ল্যারিটি</span>
+            </div>
+            <p class="task-instruction">সাধারণ সাইজ বড় করা আর Latent Upscale বা তিল-লোমকূপের মতো মাইক্রো-ডিটেইলস তৈরি করার মূল পার্থক্য স্টাডি করুন।</p>
+            <div class="task-proof">📸 প্রুফ: ৩য় সপ্তাহের ২১টি টাস্ক শেষ করার মাইলফলক স্ক্রিনশট।</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Phase 4: Days 22–30 -->
+    <div class="phase-card">
+      <div class="phase-header" onclick="togglePhase('phase-4')">
+        <div class="phase-title-group">
+          <span class="phase-badge">PHASE 4</span>
+          <span class="phase-name">আধুনিক মডেল ও AI ভিডিও জেনারেশন (Days 22–30)</span>
+        </div>
+        <span class="phase-count" id="phase-4-count">০/৯ সম্পন্ন</span>
+      </div>
+      <div class="tasks-list" id="phase-4">
+        
+        <!-- Day 22 -->
+        <div class="day-card" id="card-22">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-22" onchange="toggleTask(22)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 22</span>
+              <span class="task-title">FLUX মডেল ও DiT (Diffusion Transformer) আর্কিটেকচার</span>
+            </div>
+            <p class="task-instruction">আধুনিক DiT কীভাবে ছবির ভেতরের টেক্সট সঠিকভাবে বানান করে লিখে এবং ফোটোরিয়েলিজমে নতুন মানদণ্ড তৈরি করে তা পর্যালোচনা করুন।</p>
+            <div class="task-proof">📸 প্রুফ: FLUX ও DiT-এর বিশেষ সুবিধার নোট।</div>
+          </div>
+        </div>
+
+        <!-- Day 23 -->
+        <div class="day-card" id="card-23">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-23" onchange="toggleTask(23)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 23</span>
+              <span class="task-title">Qwen Image ও ইনস্ট্রাকশন-ভিত্তিক এডিটিং</span>
+            </div>
+            <p class="task-instruction">মাস্ক ছাড়া শুধুমাত্র কথা বলে ছবি এডিট: "Change the red car to blue" বা "Make the weather rainy"—ইনস্ট্রাকশন মডেলের ব্যবহার বুঝুন।</p>
+            <div class="task-proof">📸 প্রুফ: ইনস্ট্রাকশন দিয়ে ছবি এডিটের নোট বা ডেমো।</div>
+          </div>
+        </div>
+
+        <!-- Day 24 -->
+        <div class="day-card" id="card-24">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-24" onchange="toggleTask(24)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 24</span>
+              <span class="task-title">Character Consistency — একই চরিত্রের ধারাবাহিকতা রাখা</span>
+            </div>
+            <p class="task-instruction">ভিডিও বা কমিক্সে একই চরিত্রের মুখ ও পোশাক বিভিন্ন ফ্রেমে কীভাবে অপরিবর্তিত রাখতে হয়—চরিত্র শিট ও রেফারেন্সের নিয়মাবলি শিখুন।</p>
+            <div class="task-proof">📸 প্রুফ: ক্যারেক্টার কনসিস্টেন্সির ৩টি নিয়ম নোট করা।</div>
+          </div>
+        </div>
+
+        <!-- Day 25 -->
+        <div class="day-card" id="card-25">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-25" onchange="toggleTask(25)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 25</span>
+              <span class="task-title">রেফারেন্স ইমেজ দিয়ে মাল্টি-অ্যাঙ্গেল ভিজ্যুয়াল ব্লেন্ডিং</span>
+            </div>
+            <p class="task-instruction">সামনে, পাশে ও ৩/৪ কোণ থেকে তোলা ছবি দিয়ে কীভাবে নিখুঁত টার্নঅ্যারাউন্ড ও দৃশ্য তৈরি করা যায় তা অনুশীলন করুন।</p>
+            <div class="task-proof">📸 প্রুফ: টার্নঅ্যারাউন্ড রেফারেন্সের ধারণা নোট করা।</div>
+          </div>
+        </div>
+
+        <!-- Day 26 -->
+        <div class="day-card" id="card-26">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-26" onchange="toggleTask(26)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 26</span>
+              <span class="task-title">AI Video পরিচিতি — Text-to-Video বনাম Image-to-Video</span>
+            </div>
+            <p class="task-instruction">স্থির ছবিকে জীবন্ত ভিডিওতে রূপান্তর করার পদ্ধতি (I2V) কেন সরাসরি টেক্সট ভিডিওর (T2V) চেয়ে বেশি নিয়ন্ত্রণযোগ্য তা জানুন।</p>
+            <div class="task-proof">📸 প্রুফ: I2V বনাম T2V এর তুলনামূলক নোট।</div>
+          </div>
+        </div>
+
+        <!-- Day 27 -->
+        <div class="day-card" id="card-27">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-27" onchange="toggleTask(27)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 27</span>
+              <span class="task-title">First Frame ও Last Frame দিয়ে মোশন কন্ট্রোল</span>
+            </div>
+            <p class="task-instruction">প্রথম ফ্রেম এবং শেষ ফ্রেম ফিক্সড রেখে মাঝখানের মুভমেন্টকে কীভাবে মসৃণ ট্রানজিশন করা যায় তা বুঝুন।</p>
+            <div class="task-proof">📸 প্রুফ: ফার্স্ট ও লাস্ট ফ্রেম অ্যানিমেশনের নোট।</div>
+          </div>
+        </div>
+
+        <!-- Day 28 -->
+        <div class="day-card" id="card-28">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-28" onchange="toggleTask(28)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 28</span>
+              <span class="task-title">ক্যামেরা প্যান, জুম ও সাবজেক্ট মোশনের সিনেমাটিক রুল</span>
+            </div>
+            <p class="task-instruction">Pan Left/Right, Tilt Up/Down, Zoom In, Orbit মুভমেন্ট দিয়ে AI ভিডিওকে ড্রামাটিক রূপ দেওয়ার কমান্ড ও ভাষা শিখুন।</p>
+            <div class="task-proof">📸 প্রুফ: ৫টি সিনেমাটিক ক্যামেরা কমান্ডের তালিকা।</div>
+          </div>
+        </div>
+
+        <!-- Day 29 -->
+        <div class="day-card" id="card-29">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-29" onchange="toggleTask(29)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 29</span>
+              <span class="task-title">ElevenLabs ভয়েস সিন্থেসিস ও নিখুঁত Lip-Sync</span>
+            </div>
+            <p class="task-instruction">নিজের গলার ভয়েস ক্লোন করা এবং সেই অডিও দিয়ে AI চরিত্রের মুখের ঠোঁট মেলানো (Lip-Syncing)-এর মূল নিয়ম জানুন।</p>
+            <div class="task-proof">📸 প্রুফ: লিপ-সিংক ও ভয়েসওভারের মূল পাইপলাইনের নোট।</div>
+          </div>
+        </div>
+
+        <!-- Day 30 -->
+        <div class="day-card" id="card-30">
+          <label class="checkbox-container">
+            <input type="checkbox" id="task-30" onchange="toggleTask(30)" />
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <div class="task-top">
+              <span class="day-pill">DAY 30</span>
+              <span class="task-title">🏆 গ্র্যান্ড ফিনালে — আপনার প্রথম সম্পূর্ণ AI কমার্শিয়াল বা রিল প্রকাশ!</span>
+            </div>
+            <p class="task-instruction">অভিনন্দন! ৩০ দিনের সম্পূর্ণ জ্ঞান কাজে লাগিয়ে আপনার নিজের তৈরি ১টি কনসেপ্ট ছবি বা শর্ট ভিডিও সোশ্যাল মিডিয়ায় শেয়ার করুন!</p>
+            <div class="task-proof">🎉 প্রুফ: ৩০/৩০ টাস্ক সম্পন্ন করে ফাইনাল ব্যাজ অর্জন করুন!</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- EOD Check-in Helper Section -->
+    <div class="eod-section">
+      <div class="eod-header">
+        <span style="font-size: 1.8rem;">📋</span>
+        <h2>প্রতিদিনের চেক-ইন হেল্পার (Done / Stuck / Proof)</h2>
+      </div>
+      <p class="eod-desc">প্রতিদিন হোমওয়ার্ক শেষ করে নিচের তথ্যগুলো পূরণ করুন অথবা ডিফল্ট টেমপ্লেটটি এক ক্লিকে কপি করে আপনার মেন্টর বা ফেসবুক গ্রুপে পোস্ট করে দিন।</p>
+
+      <div class="eod-form-grid">
+        <div class="input-group">
+          <label for="student-name">আপনার নাম:</label>
+          <input type="text" id="student-name" placeholder="যেমন: তানভীর আহমেদ" oninput="updateTemplate()" />
+        </div>
+        <div class="input-group">
+          <label for="active-day">আজকের দিন (Day):</label>
+          <select id="active-day" onchange="updateTemplate()">
+            <!-- Generated via JS 1 to 30 -->
+          </select>
+        </div>
+        <div class="input-group">
+          <label for="task-done">আজ কী করলেন (Done):</label>
+          <input type="text" id="task-done" placeholder="যেমন: Gemini তে প্রথম ৩টি প্রম্পট দিয়েছি..." oninput="updateTemplate()" />
+        </div>
+        <div class="input-group">
+          <label for="task-stuck">কোথায় আটকে গেছেন (Stuck):</label>
+          <input type="text" id="task-stuck" placeholder="যেমন: কোথাও আটকাইনি, সব ক্লিয়ার!" oninput="updateTemplate()" />
+        </div>
+      </div>
+
+      <div class="eod-template-box" id="template-preview">
+[AI ৩০ দিনের বিগিনার চ্যালেঞ্জ — ডেইলি চেক-ইন]
+👤 নাম: 
+📅 দিন: Day 1 সম্পন্ন ✔
+✅ Done: 
+⚠️ Stuck: কোথাও আটকাইনি, সব ক্লিয়ার!
+📸 Proof: হোমওয়ার্কের স্ক্রিনশট সংযুক্ত করলাম।
+      </div>
+
+      <button class="copy-btn" onclick="copyTemplate()">
+        <span>📋 টেমপ্লেট কপি করুন</span>
+      </button>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">✔ চেক-ইন মেসেজ সফলভাবে কপি হয়েছে!</div>
+
+    <!-- Footer -->
+    <footer>
+      <p>AI সহজপাঠ with Sami • Presented by <a href="https://filmaas.com" target="_blank">FILMAAS</a></p>
+      <p style="margin-top: 6px; font-size: 0.8rem; color: #52525b;">প্রগ্রেস আপনার ব্রাউজারে সুরক্ষিত থাকে। যে কোনো সময় ব্রাউজার ওপেন করে প্র্যাকটিস চালিয়ে যান।</p>
+    </footer>
+
+  </div>
+
+  <script>
+    const TOTAL_DAYS = 30;
+    const STORAGE_KEY = 'ai_challenge_progress_v1';
+    let progress = {};
+
+    // Initialize Day Select options
+    const daySelect = document.getElementById('active-day');
+    for (let i = 1; i <= TOTAL_DAYS; i++) {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.innerText = `Day ${i}`;
+      daySelect.appendChild(opt);
+    }
+
+    // Load from LocalStorage
+    function loadProgress() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) progress = JSON.parse(saved);
+      } catch (e) {
+        progress = {};
+      }
+
+      for (let i = 1; i <= TOTAL_DAYS; i++) {
+        const cb = document.getElementById(`task-${i}`);
+        const card = document.getElementById(`card-${i}`);
+        if (cb && card) {
+          const isDone = !!progress[i];
+          cb.checked = isDone;
+          if (isDone) card.classList.add('completed');
+          else card.classList.remove('completed');
+        }
+      }
+
+      // Auto-set the active day in check-in to next unfinished task
+      let nextUnfinished = 1;
+      for (let i = 1; i <= TOTAL_DAYS; i++) {
+        if (!progress[i]) {
+          nextUnfinished = i;
+          break;
+        }
+      }
+      daySelect.value = nextUnfinished;
+
+      updateStats();
+      updateTemplate();
+    }
+
+    // Toggle Task
+    function toggleTask(day) {
+      const cb = document.getElementById(`task-${day}`);
+      const card = document.getElementById(`card-${day}`);
+      if (!cb || !card) return;
+
+      if (cb.checked) {
+        progress[day] = true;
+        card.classList.add('completed');
+      } else {
+        delete progress[day];
+        card.classList.remove('completed');
+      }
+
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+      } catch (e) {}
+
+      updateStats();
+      updateTemplate();
+    }
+
+    // Update Stats and Progress Bars
+    function updateStats() {
+      let completedCount = 0;
+      for (let i = 1; i <= TOTAL_DAYS; i++) {
+        if (progress[i]) completedCount++;
+      }
+
+      const percent = Math.round((completedCount / TOTAL_DAYS) * 100);
+      document.getElementById('progress-percent').innerText = `${percent}% সম্পন্ন`;
+      document.getElementById('progress-fill').style.width = `${percent}%`;
+      document.getElementById('progress-count').innerText = `${completedCount}/${TOTAL_DAYS} টাস্ক সম্পন্ন`;
+
+      // Update Phase Counts
+      updatePhaseCount('phase-1', 1, 7);
+      updatePhaseCount('phase-2', 8, 14);
+      updatePhaseCount('phase-3', 15, 21);
+      updatePhaseCount('phase-4', 22, 30);
+    }
+
+    function updatePhaseCount(phaseId, start, end) {
+      let count = 0;
+      const total = end - start + 1;
+      for (let i = start; i <= end; i++) {
+        if (progress[i]) count++;
+      }
+      const el = document.getElementById(`${phaseId}-count`);
+      if (el) el.innerText = `${count}/${total} সম্পন্ন`;
+    }
+
+    // Collapse / Expand Phase
+    function togglePhase(phaseId) {
+      const el = document.getElementById(phaseId);
+      if (!el) return;
+      if (el.style.display === 'none') {
+        el.style.display = 'flex';
+      } else {
+        el.style.display = 'none';
+      }
+    }
+
+    // Reset Progress
+    function resetProgress() {
+      if (confirm('আপনি কি নিশ্চিত যে আপনার সমস্ত প্রগ্রেস রিসেট করতে চান?')) {
+        progress = {};
+        localStorage.removeItem(STORAGE_KEY);
+        loadProgress();
+      }
+    }
+
+    // Update EOD Check-in Template Preview
+    function updateTemplate() {
+      const name = document.getElementById('student-name').value.trim() || '[আপনার নাম]';
+      const day = daySelect.value;
+      const doneInput = document.getElementById('task-done').value.trim();
+      const taskCard = document.querySelector(`#card-${day} .task-title`);
+      const defaultDone = taskCard ? taskCard.innerText : `Day ${day}-এর অ্যাসাইনমেন্ট সম্পন্ন করেছি`;
+      const done = doneInput || defaultDone;
+      const stuck = document.getElementById('task-stuck').value.trim() || 'কোনো সমস্যা হয়নি, সবকিছু সুন্দরভাবে সম্পন্ন করেছি।';
+
+      const text = `[AI ৩০ দিনের বিগিনার চ্যালেঞ্জ — ডেইলি চেক-ইন]
+👤 নাম: ${name}
+📅 দিন: Day ${day} সম্পন্ন ✔
+✅ Done: ${done}
+⚠️ Stuck: ${stuck}
+📸 Proof: আজকের হোমওয়ার্কের প্রমাণ সংযুক্ত করলাম।`;
+
+      document.getElementById('template-preview').innerText = text;
+    }
+
+    // Copy Template to Clipboard
+    function copyTemplate() {
+      const text = document.getElementById('template-preview').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast();
+      }).catch(() => {
+        // Fallback
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast();
+      });
+    }
+
+    function showToast() {
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // Initialize on Load
+    window.addEventListener('DOMContentLoaded', loadProgress);
+  </script>
+</body>
+</html>
